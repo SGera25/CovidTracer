@@ -1,6 +1,11 @@
 from flask import Flask, redirect, url_for, render_template, request, flash, session
 from datetime import timedelta
+<<<<<<< HEAD
 import flask_sqlalchemy import SQLAlchemy
+=======
+from flask_googlemaps import GoogleMaps
+from flask_googlemaps import Map
+>>>>>>> 83054a1e31abf920c9a736f9ee624af337659633
 
 app = Flask(__name__)
 app.secret_key = "test"
@@ -8,6 +13,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://users.sqlite3'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.permanent_session_lifetime = timedelta(minutes=15)
 
+<<<<<<< HEAD
 db = SQLAlchemy(app)
 
 class users(db.Model):
@@ -35,6 +41,13 @@ class users(db.Model):
         self.symptoms = symptoms
         self.contact = contact
 
+=======
+# Google Maps
+app.config['GOOGLEMAPS_KEY'] = "AIzaSyCoMJFQnPrxQf4Y4XBmJIYmd0_ER0lncV4"
+
+#Initialize etension
+GoogleMaps(app)
+>>>>>>> 83054a1e31abf920c9a736f9ee624af337659633
 
 @app.route("/home")
 def home():
@@ -76,9 +89,35 @@ def logout():
     session.pop("email", None)
     return redirect(url_for("login"))
 
-@app.route("/map")
-def map():
-    return render_template("home.html")
+@app.route("/maps")
+def mapview():
+    # creating a map in the view
+    mymap = Map(
+        identifier="view-side",
+        lat=40.760648,
+        lng=-111.871201,
+        markers=[(40.760648, -111.871201)]
+    )
+    sndmap = Map(
+        identifier="sndmap",
+        lat=40.760648,
+        lng=-111.871201,
+        markers=[
+          {
+             'icon': 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+             'lat': 40.759928,
+             'lng': -111.875747,
+             'infobox': "<b>Smith's</b>"
+          },
+          {
+             'icon': 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+             'lat': 40.760948,
+             'lng': -111.873592,
+             'infobox': "<b>Jimmy John's</b>"
+          }
+        ]
+    )
+    return render_template('maps.html', mymap=mymap, sndmap=sndmap)
 
 if __name__=="__main__":
     db.create_all()
