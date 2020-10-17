@@ -3,9 +3,8 @@
     "",
     "\\Model",
     "\\Website",
-    "\\Website\\templates",
-    "\\Website\\templates\\images"
+    "\\Website\\templates"
   ],
-  "SelectedNode": "\\Model\\TimeBlock.py",
+  "SelectedNode": "\\Website\\website.py",
   "PreviewInSolutionExplorer": false
 }
