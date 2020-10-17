@@ -1,7 +1,10 @@
 {
   "ExpandedNodes": [
     "",
-    "\\Model"
+    "\\Model",
+    "\\Website",
+    "\\Website\\templates",
+    "\\Website\\templates\\images"
   ],
   "SelectedNode": "\\Model\\TimeBlock.py",
   "PreviewInSolutionExplorer": false
