@@ -1,26 +1,22 @@
 from flask import Flask, redirect, url_for, render_template, request, flash, session
 from datetime import timedelta
-<<<<<<< HEAD
-import flask_sqlalchemy import SQLAlchemy
-=======
+from flask_sqlalchemy import SQLAlchemy
 from flask_googlemaps import GoogleMaps
 from flask_googlemaps import Map
->>>>>>> 83054a1e31abf920c9a736f9ee624af337659633
 
 app = Flask(__name__)
 app.secret_key = "test"
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://users.sqlite3'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.sqlite3'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.permanent_session_lifetime = timedelta(minutes=15)
 
-<<<<<<< HEAD
 db = SQLAlchemy(app)
 
 class users(db.Model):
     _id = db.Column("id", db.Integer, primary_key=True)
     name = db.Column(db.String(100))
     email = db.Column(db.String(100))
-    age = db.Column(db.Integer(3))
+    age = db.Column(db.Integer())
     sex = db.Column(db.String(100))
     date = db.Column(db.String(100))
     time = db.Column(db.String(100))
@@ -29,7 +25,7 @@ class users(db.Model):
     symptoms =  db.Column(db.String(100))
     contact =  db.Column(db.String(100))
 
-    def __init__(self, name, email, age, sex, date, time, location, mask, symptoms, contact):
+    def __init__(self, name, email, age=None, sex=None, date=None, time=None, location=None, mask=None, symptoms=None, contact=None):
         self.name = name
         self.email = email
         self.age = age
@@ -41,17 +37,19 @@ class users(db.Model):
         self.symptoms = symptoms
         self.contact = contact
 
-=======
 # Google Maps
 app.config['GOOGLEMAPS_KEY'] = "AIzaSyCoMJFQnPrxQf4Y4XBmJIYmd0_ER0lncV4"
 
 #Initialize etension
 GoogleMaps(app)
->>>>>>> 83054a1e31abf920c9a736f9ee624af337659633
 
 @app.route("/home")
 def home():
     return render_template("home.html")
+
+@app.route("/view")
+def view():
+    return render_template("view.html", values=users.query.all())
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
@@ -59,6 +57,15 @@ def login():
         session.permanent = True
         user = request.form["nm"]
         session["user"] = user
+
+        found_user = users.query.filter_by(name=user).first()
+        if found_user:
+            session["email"] = founder_user.email
+        else:
+            usr = users(user, "")
+            db.session.add(usr)
+            db.session.commit()
+
         return redirect(url_for("user"))
     else:
         if "user" in session:
@@ -72,14 +79,16 @@ def user():
         user = session["user"]
 
         if request.method == "POST":
-            email = requests.form["email"]
+            email = request.form["email"]
             session["email"] = email
+            found_user = users.query.filter_by(name=user).first()
+            found_user.email = email
+            db.session.commit()
         else:
-            email = session["email"]
             if "email" in session:
                 email = session["email"]
 
-        return f"<h1>{user}</h1>"
+        return render_template("user.html", email=email)
     else:
         return redirect(url_for("login"))
 
