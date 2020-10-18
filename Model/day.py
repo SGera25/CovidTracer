@@ -38,6 +38,11 @@ class Day:
 			totalRisk += self.timeBlocks[x].getRiskSum(person)
 		return totalRisk
 
+	def getTotalRiskSum(self):
+		x = 0
+		for y in self.timeblocks:
+			x += y.getTotalRiskSum()
+
 
 
 

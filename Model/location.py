@@ -27,6 +27,10 @@ class Location:
 		if(isinstance(other, self.__class__)):
 			return hash(self) != hash(other)
 		return False
+
+	def __str__(self):
+		return self.address
+
 	#Method used to initialize a deqeue with 14 empty days
 	def __fillDeque(self):
 		base = dt.date.today()
@@ -49,6 +53,12 @@ class Location:
 	def updateNewDay(self):
 		self.days.pop()
 		self.days.appendleft(day(dt.date.today()))
+
+	def getTotalRiskSum(self):
+		x = self.days.popleft()
+		self.days.appendleft(x)
+		return x.getTotalRiskSum()
+
 
 x = Location("14247 S Canyon Vine Cove")
 p = Person("john", "risks")
