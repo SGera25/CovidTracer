@@ -1,8 +1,8 @@
 
 import datetime as dt
 
-from Model.location import Location
-from Model.person import Person
+from location import Location
+from person import Person
 
 
 class Zip:
