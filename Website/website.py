@@ -111,6 +111,8 @@ def logout():
 
 @app.route("/maps")
 def mapview():
+
+
     # Creating map
     sndmap = Map(
         identifier="sndmap",
