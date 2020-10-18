@@ -1,5 +1,5 @@
-from timeBlock import TimeBlock
 from person import Person
+from timeBlock import TimeBlock
 import datetime as dt
 import math 
 
@@ -9,6 +9,7 @@ class Day:
 	#Day Constructor: Initialize an empty list that holds all 94 time blocks for a day
 	#each hour has 4 time blocks that are 15 minutes long 
 	def __init__(self, Date: dt.datetime):
+		self.timeBlocks = []
 		self.initTimeBlocks()
 		self.date = Date
 
@@ -18,7 +19,6 @@ class Day:
 
 	#Helper method to initialize an empty Day with empty timeBlocks
 	def initTimeBlocks(self):
-		self.timeBlocks = []
 		#Initialize the list to have 96 empty time blocks
 		for x in range(96):
 			self.timeBlocks.append(TimeBlock())
@@ -40,8 +40,9 @@ class Day:
 
 	def getTotalRiskSum(self):
 		x = 0
-		for y in self.timeblocks:
+		for y in self.timeBlocks:
 			x += y.getTotalRiskSum()
+		return x
 
 
 

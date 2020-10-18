@@ -7,6 +7,7 @@ from flask_googlemaps import GoogleMaps, Map
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+from Model.main import CovidTracer
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "test"
@@ -16,6 +17,8 @@ db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
+tracer = CovidTracer()
+
 
 list_of_markers = []
 

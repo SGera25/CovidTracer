@@ -1,10 +1,12 @@
 
 
 from collections import deque
-from day import Day
-from person import Person
 import datetime as dt
-#Class Location holds a deque containing 14 day objects 
+#Class Location holds a deque containing 14 day objects
+from Model.day import Day
+from Model.person import Person
+
+
 class Location:
 	
 	#On location initialization set address, initialize an dequeue filled with 14 empty days
@@ -19,12 +21,12 @@ class Location:
 
 	#override == for use in comparison in main file
 	def __eq__(self, other):
-		if(isinstance(other, self.__class__)):
+		if isinstance(other, self.__class__):
 			return hash(self) == hash(other)
 		return False
 	#override !- for use in comparison in main file
 	def __ne__(self, other):
-		if(isinstance(other, self.__class__)):
+		if isinstance(other, self.__class__):
 			return hash(self) != hash(other)
 		return False
 
@@ -52,16 +54,10 @@ class Location:
 	#no current functionality but can be useful if we ever need to update days in all locations when we move a day forward
 	def updateNewDay(self):
 		self.days.pop()
-		self.days.appendleft(day(dt.date.today()))
+		self.days.appendleft(Day(dt.date.today()))
 
 	def getTotalRiskSum(self):
 		x = self.days.popleft()
 		self.days.appendleft(x)
 		return x.getTotalRiskSum()
 
-
-x = Location("14247 S Canyon Vine Cove")
-p = Person("john", "risks")
-o = Person("bill", "risks")
-print(x.getRiskValue(dt.date.today(), (0,14), p))
-print(x.getRiskValue(dt.date.today() - dt.timedelta(days = 0), (0, 14), o))
