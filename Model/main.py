@@ -1,5 +1,10 @@
-import math, Model, datetime
-from openpyxl import load_workbook
+import math
+import datetime as dt
+
+from person import Person
+from zip import Zip
+
+
 class CovidTracer:
 
 	def __init__(self):
@@ -16,11 +21,31 @@ class CovidTracer:
 
 	#returns a risk value for given person and also sets that person within the data structure as well
 	#the infoString returns location, time, symptoms, and name
-	def getRiskValue(self, infoString: str):
-		self.zips
-		return 1
-		
-
+	def getRiskValue(self, name: str, infoString: str):
+		entries = infoString.split("###")
+		summedRisk = 0
+		for entry in entries:
+			fields = entry.split("\n")
+			risks = ""
+			date = 0
+			startTime = 0
+			endTime = 0
+			zipcode = 0
+			address = ""
+			for x in range(6):
+				if x > 2:
+					risks += fields[x] + ";"
+				elif x == 0:
+					date = formatDate(fields[x])
+				elif x == 1:
+					startTime, endTime = formatTimeRangeIntoInts(fields[x])
+				else:
+					address, zipcode = getLocationData(fields[x])
+			currentPerson = Person(name, risks)
+			if zipcode not in self.zips:
+				self.zips[zipcode] = Zip(zipcode)
+			summedRisk += self.zips[zipcode].getRiskValue(date, (startTime, endTime), address, currentPerson)
+		return summedRisk
 
 
 #helper method returns a str formatted as a time range within 00:00-23:59 
@@ -40,13 +65,29 @@ def formatTimeRange(startTime: int, endTime: int):
 
 	return startHours + ":" + startMins + " - " + endHours + ":" + endMins
 #helper method that returns two ints based on the given time range 
-def formatTimeInt(timeRange: str):
-	x = timeRange.split(":")
+def formatTimeInt(time: str):
+	x = time.split(":")
 	return (int(x[0]) * 60) + int(x[1])
 
+def formatTimeRangeIntoInts(timeRange: str):
+	x = timeRange.split("-")
+	return formatTimeInt(x[0]), formatTimeInt(x[1])
 
+def formatDate(date: str):
+	x = date.split("/")
+	return dt.date(int(x[2]), int(x[0]), int(x[1]))
 
+def getLocationData(address: str):
+	x = address.split(",")
+	return x[0], x[3].replace(" ", "")
 
+if __name__ == '__main__':
+	#x = CovidTracer()
+	#print(x.getRiskValue("billy", "10/18/2020\n00:00 - 00:12\nYour mom street, draper, UT, 84020\nyes\nCough\n0-5"))
+	#print(x.getRiskValue("timmy", "10/18/2020\n00:00 - 00:12\nYour mom street, draper, UT, 84020\nyes\nCough\n0-5"))
+	#print(x.getRiskValue("rudy", "10/18/2020\n00:00 - 00:12\nYour mom street, draper, UT, 84020\nyes\nCough\n0-5"))
+	#print(x.getRiskValue("jiffy", "10/18/2020\n00:00 - 00:12\nYour mom street, draper, UT, 84020\nyes\nCough\n0-5"))
+	#print(x.getHighRiskLocations("84020"))
 
 
 

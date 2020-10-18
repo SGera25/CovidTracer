@@ -1,10 +1,7 @@
-
-
-
 from person import Person
 
 
-class TimeBlock: 
+class TimeBlock:
 	#creates an empty set of people and verifies given time 
 	def __init__(self):
 		self.people = {}
@@ -19,7 +16,7 @@ class TimeBlock:
 
 		for y in self.people:
 			#ignore self
-			if(person.getName() != y):
+			if person.getName() != y:
 				x += self.people[y].getRiskValue()
 		return x
 
