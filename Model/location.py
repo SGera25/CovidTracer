@@ -34,15 +34,15 @@ class Location:
 			self.days.append(Day(base - dt.timedelta(days = x)))
 
 	#returns a value for a individual's risk value, but also inserts them into the locations Day
-	def getRiskValue(self, Date: dt.date, startTime: int, endTime: int, p: Person):
+	def getRiskValue(self, Date: dt.date, time: tuple, p: Person):
 		x = 0
 		#iterate over all day objects within the deque
 		for day in self.days:
 			#compare Dates for equality
 			if(Date == day.getDate()):
 				#getRiskValue and add that person to all applicable time blocks within the day
-				x = day.getRiskValue(startTime, endTime, p)
-				day.addPerson(startTime, endTime, p)
+				x = day.getRiskValue(time, p)
+				day.addPerson(time, p)
 		return x 
 
 	#no current functionality but can be useful if we ever need to update days in all locations when we move a day forward
@@ -50,8 +50,8 @@ class Location:
 		self.days.pop()
 		self.days.appendleft(day(dt.date.today()))
 
-'''x = Location("14247 S Canyon Vine Cove")
+x = Location("14247 S Canyon Vine Cove")
 p = Person("john", "risks")
 o = Person("bill", "risks")
-print(x.getRiskValue(dt.date.today(), 0, 14, p))
-print(x.getRiskValue(dt.date.today() - dt.timedelta(days = 1), 0, 16, o))'''
+print(x.getRiskValue(dt.date.today(), (0,14), p))
+print(x.getRiskValue(dt.date.today() - dt.timedelta(days = 0), (0, 14), o))

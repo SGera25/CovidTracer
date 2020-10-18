@@ -24,17 +24,17 @@ class Day:
 			self.timeBlocks.append(TimeBlock())
 	#Day method that adds a person to all time blocks they are in;
 	#takes time in integers from 0 - 1439 representing 00:00 - 23:59
-	def addPerson(self, startTime: int, endTime: int, person: Person):
+	def addPerson(self, time: tuple, person: Person):
 		#Time blocks time range coorelates to their index i.e. (00:16 is at index 2 because 16/15 is 1)
 		#add each person to the time block they were in
-		for x in range(math.floor(startTime/15), math.floor(endTime/15) + 1):
+		for x in range(math.floor(time[0]/15), math.floor(time[1]/15) + 1):
 			self.timeBlocks[x].addPerson(person)
 
 	#Returns the risk value for a person given start and endtimes by summing the total risk value for
 	#that person and all timeblocks they were in
-	def getRiskValue(self, startTime: int, endTime: int, person: Person):
+	def getRiskValue(self, time: tuple, person: Person):
 		totalRisk = 0
-		for x in range(math.floor(startTime/15), math.floor(endTime/15) + 1):
+		for x in range(math.floor(time[0]/15), math.floor(time[1]/15) + 1):
 			totalRisk += self.timeBlocks[x].getRiskSum(person)
 		return totalRisk
 

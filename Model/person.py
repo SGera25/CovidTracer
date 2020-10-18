@@ -33,6 +33,9 @@ class Person:
 	def getRiskValue(self):
 		return self.riskValue
 
+	def getName(self):
+		return self.name
+
 
 
 		
