@@ -7,11 +7,7 @@ from flask_googlemaps import GoogleMaps, Map
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
-<<<<<<< HEAD
 import requests
-=======
-from Model.main import CovidTracer
->>>>>>> 6a95514fb69b49a29c9108da4ae03f5979c6314b
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "test"
@@ -22,8 +18,6 @@ db_s = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
-tracer = CovidTracer()
-
 
 list_of_markers = []
 
@@ -158,7 +152,8 @@ def mapview():
              'infobox': "<b>Smith's</b>"
           },
           {
-             'icon': 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+             'icon': 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',git push
+             
              'lat': 40.760948,
              'lng': -111.873592,
              'infobox': "<b>Jimmy John's</b>"
