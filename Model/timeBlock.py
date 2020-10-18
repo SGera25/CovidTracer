@@ -23,4 +23,10 @@ class TimeBlock:
 				x += self.people[y].getRiskValue()
 		return x
 
+	def getTotalRiskSum(self):
+		x = 0
+		for y in self.people:
+			x += self.people[y].getRiskValue()
+		return x
+
 
