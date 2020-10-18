@@ -13,6 +13,7 @@ app.config["SECRET_KEY"] = "test"
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///users.sqlite3"
 Bootstrap(app)
 db = SQLAlchemy(app)
+db_s = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
@@ -25,11 +26,13 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(50), unique=True)
     password = db.Column(db.String(80))
 
-class Survey(db.Model):
-    name = db.Column(db.String(50), unique=True)
-    age = db.Column(db.String(3))
-    sex = db.Column(db.String(8))
-    pgph = db.Column(db.String())
+class Survey(db_s.Model):
+    __tablename__ = "survey_table"
+
+    name = db_s.Column(db.String(50), unique=True, primary_key=True)
+    age = db_s.Column(db.String(3), primary_key=True)
+    sex = db_s.Column(db.String(8), primary_key=True)
+    pgph = db_s.Column(db.String(1000), primary_key=True)
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -49,8 +52,7 @@ class SurveyInput(FlaskForm):
     name = StringField("Name (first and last)", validators=[InputRequired(), Length(min=1, max=30)])
     age = StringField("Age", validators=[InputRequired(), Length(min=1, max=2)])
     sex = StringField("Biological sex (m or f)", validators=[InputRequired(), Length(min=1, max=1)])
-    pgph = TextAreaField("Survey Information")
-
+    pgph = TextAreaField("-->")
 # Google Maps
 app.config['GOOGLEMAPS_KEY'] = "AIzaSyCoMJFQnPrxQf4Y4XBmJIYmd0_ER0lncV4"
 

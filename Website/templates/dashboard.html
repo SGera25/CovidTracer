@@ -11,10 +11,25 @@
         {{ wtf.form_field(form.name) }}
         {{ wtf.form_field(form.age) }}
         {{ wtf.form_field(form.sex) }}
+        <h5>Survey Information:</h5>
+        <h6>DD/MM/YEAR</h6>
+        <h6>HH:MM - HH:MM (MILITARY TIME)</h6>
+        <h6>Street Address, City, State, Zipcode</h6>
+        <h6>yes/no (Mask)</h6>
+        <h6>Cough, fever, sore throat, congestion</h6>
+        <h6>0-5, 6-2, or 13+ (contact)</h6>
+        <br>
+        <h5>Example Entry:</h5>
+        <h6>01/00/2000</h6>
+        <h6>00:00 - 00:12</h6>
+        <h6>Big house street, draper, UT, 84020</h6>
+        <h6>yes</h6>
+        <h6>Cough</h6>
+        <h6>0-5")</h6>
         {{ render_field(form.pgph) }}
         </div>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
     </form>
-    <button class="btn btn-lg btn-primary btn-block" type="new-entry">New Entry</button>
+
 
 {% endblock %}
