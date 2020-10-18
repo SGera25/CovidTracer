@@ -1,7 +1,7 @@
 from flask import Flask, redirect, url_for, render_template, request, flash, session
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField
+from wtforms import StringField, PasswordField, BooleanField, TextAreaField
 from wtforms.validators import InputRequired, Email, Length
 from flask_googlemaps import GoogleMaps, Map
 from flask_sqlalchemy import SQLAlchemy
@@ -50,7 +50,7 @@ class SurveyInput(FlaskForm):
     name = StringField("Name (first and last)", validators=[InputRequired(), Length(min=1, max=30)])
     age = StringField("Age", validators=[InputRequired(), Length(min=1, max=2)])
     sex = StringField("Biological sex (m or f)", validators=[InputRequired(), Length(min=1, max=1)])
-    pgph = StringField("Info Entry:", validators=[InputRequired(), Length(min=0)])
+    pgph = TextAreaField("Survey Information")
 
 # Google Maps
 app.config['GOOGLEMAPS_KEY'] = "AIzaSyCoMJFQnPrxQf4Y4XBmJIYmd0_ER0lncV4"
