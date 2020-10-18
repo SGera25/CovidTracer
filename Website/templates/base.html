@@ -7,7 +7,7 @@
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="{{ url_for('home') }}">
                 <img src="https://i.imgur.com/8VkOt4n.png" width="70" height="35" class="d-inline-block align-top" alt="" loading="lazy">
                 Covid Trace
                 </a>
@@ -17,19 +17,24 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="{{ url_for('home') }}">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Tracer Form</a>
+                    <a class="nav-link" href="{{ url_for('login') }}">Log in</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('signup') }}">Sign up</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('mapview') }}">Tracer Map</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Download the App
+                    Product Information
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
+                    <a class="dropdown-item" href="#">Contact Us</a>
+                    <a class="dropdown-item" href="#">Mobile App</a>
                     </div>
                 </li>
                 <li class="nav-item">
