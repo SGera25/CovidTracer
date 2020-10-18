@@ -7,7 +7,7 @@ from flask_googlemaps import GoogleMaps, Map
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
-from Model.main import CovidTracer
+import requests
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "test"
@@ -18,8 +18,6 @@ db_s = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
-tracer = CovidTracer()
-
 
 list_of_markers = []
 
@@ -118,6 +116,26 @@ def logout():
 @app.route("/maps")
 def mapview():
 
+    def extract_lat_long_via_address(address_or_zipcode):
+        lat, lng = None, None
+        api_key = 'AIzaSyCoMJFQnPrxQf4Y4XBmJIYmd0_ER0lncV4'
+        base_url = "https://maps.googleapis.com/maps/api/geocode/json"
+        endpoint = f"{base_url}?address={address_or_zipcode}&key={api_key}"
+        # see how our endpoint includes our API key? Yes this is yet another reason to restrict the key
+        r = requests.get(endpoint)
+        if r.status_code not in range(200, 299):
+            return None, None
+        try:
+            '''
+            This try block incase any of our inputs are invalid. This is done instead
+            of actually writing out handlers for all kinds of responses.
+            '''
+            results = r.json()['results'][0]
+            lat = results['geometry']['location']['lat']
+            lng = results['geometry']['location']['lng']
+        except:
+            pass
+        return lat, lng
 
     # Creating map
     sndmap = Map(
@@ -129,15 +147,37 @@ def mapview():
         markers=[
           {
              'icon': 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
-             'lat': 40.759928,
-             'lng': -111.875747,
-             'infobox': "<b>Smith's</b>"
+             'lat': 40.759805,
+             'lng': -111.875865,
+             'infobox': "<b>Risk Rating: 20<br>Address: 455 S 500 E, Salt Lake City, UT 84102</b>"
           },
           {
-             'icon': 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
-             'lat': 40.760948,
-             'lng': -111.873592,
-             'infobox': "<b>Jimmy John's</b>"
+             'icon': 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png',
+             
+             'lat': 40.761186,
+             'lng': -111.878751,
+             'infobox': "<b>Risk Rating: 52<br>Address: 421 E 400 S, Salt Lake City, UT 84111</b>"
+          },
+          {
+             'icon': 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+             
+             'lat': 40.765543,
+             'lng': -111.880104,
+             'infobox': "<b>Risk Rating: 4<br>Address: 377 E 200 S, Salt Lake City, UT 84111</b>"
+          },
+          {
+             'icon': 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+             
+             'lat': 40.763966,
+             'lng': -111.876278,
+             'infobox': "<b>Risk Rating: 28<br>Address: 241 500 E, Salt Lake City, UT 84102</b>"
+          },
+          {
+             'icon': 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
+             
+             'lat': 40.764129,
+             'lng': -111.883091,
+             'infobox': "<b>Risk Rating: 74<br>Address: 250 S 300 E, Salt Lake City, UT 84111</b>"
           }
         ]
     )
