@@ -1,8 +1,7 @@
 from flask import Flask, redirect, url_for, render_template, request, flash, session
 from datetime import timedelta
 from flask_sqlalchemy import SQLAlchemy
-from flask_googlemaps import GoogleMaps
-from flask_googlemaps import Map
+from flask_googlemaps import GoogleMaps, Map
 
 app = Flask(__name__)
 app.secret_key = "test"
