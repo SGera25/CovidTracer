@@ -147,16 +147,37 @@ def mapview():
         markers=[
           {
              'icon': 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
-             'lat': 40.759928,
-             'lng': -111.875747,
-             'infobox': "<b>Smith's</b>"
+             'lat': 40.759805,
+             'lng': -111.875865,
+             'infobox': "<b>Risk Rating: 20<br>Address: 455 S 500 E, Salt Lake City, UT 84102</b>"
           },
           {
-             'icon': 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',git push
+             'icon': 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png',
              
-             'lat': 40.760948,
-             'lng': -111.873592,
-             'infobox': "<b>Jimmy John's</b>"
+             'lat': 40.761186,
+             'lng': -111.878751,
+             'infobox': "<b>Risk Rating: 52<br>Address: 421 E 400 S, Salt Lake City, UT 84111</b>"
+          },
+          {
+             'icon': 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+             
+             'lat': 40.765543,
+             'lng': -111.880104,
+             'infobox': "<b>Risk Rating: 4<br>Address: 377 E 200 S, Salt Lake City, UT 84111</b>"
+          },
+          {
+             'icon': 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+             
+             'lat': 40.763966,
+             'lng': -111.876278,
+             'infobox': "<b>Risk Rating: 28<br>Address: 241 500 E, Salt Lake City, UT 84102</b>"
+          },
+          {
+             'icon': 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
+             
+             'lat': 40.764129,
+             'lng': -111.883091,
+             'infobox': "<b>Risk Rating: 74<br>Address: 250 S 300 E, Salt Lake City, UT 84111</b>"
           }
         ]
     )
