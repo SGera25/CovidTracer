@@ -7,6 +7,7 @@ from flask_googlemaps import GoogleMaps, Map
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+import requests
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "test"
@@ -115,6 +116,26 @@ def logout():
 @app.route("/maps")
 def mapview():
 
+    def extract_lat_long_via_address(address_or_zipcode):
+        lat, lng = None, None
+        api_key = 'AIzaSyCoMJFQnPrxQf4Y4XBmJIYmd0_ER0lncV4'
+        base_url = "https://maps.googleapis.com/maps/api/geocode/json"
+        endpoint = f"{base_url}?address={address_or_zipcode}&key={api_key}"
+        # see how our endpoint includes our API key? Yes this is yet another reason to restrict the key
+        r = requests.get(endpoint)
+        if r.status_code not in range(200, 299):
+            return None, None
+        try:
+            '''
+            This try block incase any of our inputs are invalid. This is done instead
+            of actually writing out handlers for all kinds of responses.
+            '''
+            results = r.json()['results'][0]
+            lat = results['geometry']['location']['lat']
+            lng = results['geometry']['location']['lng']
+        except:
+            pass
+        return lat, lng
 
     # Creating map
     sndmap = Map(
