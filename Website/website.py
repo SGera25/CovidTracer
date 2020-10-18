@@ -50,7 +50,7 @@ class SurveyInput(FlaskForm):
     name = StringField("Name (first and last)", validators=[InputRequired(), Length(min=1, max=30)])
     age = StringField("Age", validators=[InputRequired(), Length(min=1, max=2)])
     sex = StringField("Biological sex (m or f)", validators=[InputRequired(), Length(min=1, max=1)])
-    pgph = StringField("Age", validators=[InputRequired(), Length()])
+    pgph = StringField("Info Entry:", validators=[InputRequired(), Length(min=0)])
 
 # Google Maps
 app.config['GOOGLEMAPS_KEY'] = "AIzaSyCoMJFQnPrxQf4Y4XBmJIYmd0_ER0lncV4"
