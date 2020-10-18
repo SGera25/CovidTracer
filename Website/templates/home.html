@@ -2,9 +2,6 @@
 {% block title %}Home Page{% endblock %}
 {% block head %}{% endblock %}
 {% block content %}
-<<<<<<< HEAD
-<h1, style="text-align:center">Covid Tracer</h1>
-=======
 <html style="font-size: 16px;">
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -38,13 +35,13 @@
     <meta property="og:url" content="index.html">
   </head>
   <body class="u-body">
-    <section class="u-clearfix u-image u-shading u-section-1" id="sec-1d56">
+    <section class="u-clearfix u-image u-shading u-section-1" id="sec-1d56" style="background-image: url(https://i.imgur.com/ngMng0b.jpg);">
       <div class="u-clearfix u-sheet u-sheet-1">
         <div class="u-container-style u-group u-group-1">
           <div class="u-container-layout u-valign-middle u-container-layout-1">
             <h2 class="u-subtitle u-text u-text-1">Keeping Each Other Safe</h2>
             <h1 class="u-text u-title u-text-2">Covid Tracer</h1>
-            <a href="https://nicepage.com" class="u-border-2 u-border-palette-1-base u-btn u-button-style u-btn-1">Sign up today</a>
+            <a href="{{ url_for('signup') }}" class="u-border-2 u-border-palette-1-base u-btn u-button-style u-btn-1">Sign up today</a>
           </div>
         </div>
       </div>
@@ -84,7 +81,7 @@
                   <div class="u-container-style u-layout-cell u-left-cell u-size-60 u-layout-cell-1">
                     <div class="u-container-layout u-container-layout-1">
                       <h2 class="u-text u-text-1">Keeping Each Other Safe</h2>
-                      <img src="images/Phone.jpg" alt="" class="u-expanded-width u-image u-image-default u-image-1">
+                      <img src="https://i.imgur.com/19Bl3dY.jpg" alt="" class="u-expanded-width u-image u-image-default u-image-1">
                     </div>
                   </div>
                 </div>
@@ -121,14 +118,14 @@
 </g>
 </g></svg></span>
                   <h3 class="u-text u-text-3">Contact us</h3>
-                  <a href="https://nicepage.com" class="u-border-2 u-border-palette-1-base u-btn u-button-style u-btn-1">View</a>
+                  <a href="#" class="u-border-2 u-border-palette-1-base u-btn u-button-style u-btn-1">View</a>
                 </div>
               </div>
               <div class="u-align-left u-container-style u-layout-cell u-size-20 u-layout-cell-2">
                 <div class="u-container-layout u-container-layout-3"><span class="u-icon u-icon-circle u-text-palette-1-base u-icon-2"><svg class="u-svg-link" preserveAspectRatio="xMidYMin slice" viewBox="0 0 39.658 39.658" style=""><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#svg-7ef2"></use></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" xml:space="preserve" class="u-svg-content" viewBox="0 0 39.658 39.658" x="0px" y="0px" id="svg-7ef2" style="enable-background:new 0 0 39.658 39.658;"><g><path d="M30.755,0H8.903c-0.829,0-1.5,0.671-1.5,1.5v36.658c0,0.829,0.671,1.5,1.5,1.5h21.852c0.829,0,1.5-0.671,1.5-1.5V1.5   C32.255,0.671,31.583,0,30.755,0z M15.996,1.829h7.667c0.275,0,0.5,0.224,0.5,0.5s-0.225,0.5-0.5,0.5h-7.667   c-0.276,0-0.5-0.224-0.5-0.5S15.719,1.829,15.996,1.829z M19.829,37.996c-0.736,0-1.333-0.598-1.333-1.333s0.597-1.334,1.333-1.334   c0.736,0,1.333,0.599,1.333,1.333S20.565,37.996,19.829,37.996z M29.255,33.829H10.403V4.162h18.852V33.829z"></path>
 </g></svg></span>
                   <h3 class="u-text u-text-4">Download the App</h3>
-                  <a href="https://nicepage.com" class="u-border-2 u-border-palette-1-base u-btn u-button-style u-btn-2">Coming soon</a>
+                  <a href="#" class="u-border-2 u-border-palette-1-base u-btn u-button-style u-btn-2">Coming soon</a>
                 </div>
               </div>
               <div class="u-align-left u-container-style u-layout-cell u-right-cell u-size-20 u-layout-cell-3">
@@ -137,7 +134,7 @@
                   <h3 class="u-text u-text-5">Sign up<br>
                     <br>
                   </h3>
-                  <a href="https://nicepage.com" class="u-border-2 u-border-palette-1-base u-btn u-button-style u-btn-3">Register</a>
+                  <a href="{{ url_for('signup') }}" class="u-border-2 u-border-palette-1-base u-btn u-button-style u-btn-3">Register</a>
                 </div>
               </div>
             </div>
@@ -163,5 +160,4 @@
 </html>
 
 
->>>>>>> 27a04f8f8a4c2e93fa8dd69446befc13378942dc
 {% endblock %}

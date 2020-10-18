@@ -17,6 +17,8 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
+list_of_markers = []
+
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(), unique=True)
@@ -90,17 +92,13 @@ def logout():
 
 @app.route("/maps")
 def mapview():
-    # creating a map in the view
-    mymap = Map(
-        identifier="view-side",
-        lat=40.760648,
-        lng=-111.871201,
-        markers=[(40.760648, -111.871201)]
-    )
+    # Creating map
     sndmap = Map(
         identifier="sndmap",
         lat=40.760648,
         lng=-111.871201,
+        zoom=15,
+        style="height:900px;width:900px;margin:30;",
         markers=[
           {
              'icon': 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
@@ -116,7 +114,7 @@ def mapview():
           }
         ]
     )
-    return render_template('maps.html', mymap=mymap, sndmap=sndmap)
+    return render_template('maps.html', sndmap=sndmap)
 
 if __name__=="__main__":
     db.create_all()
