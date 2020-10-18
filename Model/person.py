@@ -7,8 +7,7 @@ class Person:
 
 	def __init__(self, name: str, riskFactorString: str):
 		self.name = name
-		self.initRiskFactors(riskFactorString)
-		self.riskValue = 0
+		self.riskValue = 1
 
 
 
@@ -21,12 +20,14 @@ class Person:
 		return hash(self.name)
 
 	def __eq__(self, other):
-		if isinstance(self, other):
+		if isinstance(other, self.__class__):
 			return hash(self) == hash(other)
+		return False
 
 	def __ne__(self, other):
-		if isinstance(self, other):
+		if isinstance(other, self.__class__):
 			return hash(self) != hash(other)
+		return False
 
 	#getter for riskValue
 	def getRiskValue(self):

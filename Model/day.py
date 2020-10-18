@@ -1,15 +1,19 @@
 from timeBlock import TimeBlock
 from person import Person
-import math
-
+import datetime as dt
+import math 
 
 
 class Day:
 
 	#Day Constructor: Initialize an empty list that holds all 94 time blocks for a day
 	#each hour has 4 time blocks that are 15 minutes long 
-	def __init__(self, Date: str):
+	def __init__(self, Date: dt.datetime):
 		self.initTimeBlocks()
+		self.date = Date
+
+	def getDate(self):
+		return self.date
 
 
 	#Helper method to initialize an empty Day with empty timeBlocks
@@ -28,7 +32,7 @@ class Day:
 
 	#Returns the risk value for a person given start and endtimes by summing the total risk value for
 	#that person and all timeblocks they were in
-	def getRiskValue(self, startTime: int, enddTime: int, person: Person):
+	def getRiskValue(self, startTime: int, endTime: int, person: Person):
 		totalRisk = 0
 		for x in range(math.floor(startTime/15), math.floor(endTime/15) + 1):
 			totalRisk += self.timeBlocks[x].getRiskSum(person)
