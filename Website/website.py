@@ -25,6 +25,12 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(50), unique=True)
     password = db.Column(db.String(80))
 
+class Survey(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), unique=True)
+    age = db.Column(db.String(3), unique=True)
+    sex = db.Column(db.String(8), unique=True)
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
@@ -38,6 +44,11 @@ class RegisterForm(FlaskForm):
     email = StringField("Email", validators=[InputRequired(), Email(message="Invalid email"), Length(max=50)])
     username = StringField("Username", validators=[InputRequired(), Length(min=4, max=15)])
     password = PasswordField("Password", validators=[InputRequired(), Length(min=8, max=80)])
+
+class SurveyInput(FlaskForm):
+    name = StringField("Name (first and last)", validators=[InputRequired(), Length(min=0, max=30)])
+    age = StringField("Age", validators=[InputRequired(), Length(min=1, max=2)])
+    sex = PasswordField("Biological sex (m or f)", validators=[InputRequired(), Length(min=1, max=1)])
 
 # Google Maps
 app.config['GOOGLEMAPS_KEY'] = "AIzaSyCoMJFQnPrxQf4Y4XBmJIYmd0_ER0lncV4"
@@ -79,10 +90,18 @@ def signup():
         return '<h1>New user has been created!</h1>'
     return render_template("signup.html", form=form)
 
-@app.route("/dashboard")
+@app.route("/dashboard", methods=["POST", "GET"])
 @login_required
 def dashboard():
-    return render_template("dashboard.html")
+    form = SurveyInput()
+
+    if form.validate_on_submit():
+        new_survey = Survey(name=form.name.data, age=form.age.data, sex=form.sex.data)
+        db.session.add(new_survey)
+        db.session.commit()
+        return '<h1>New survey has been submitted!</h1>'
+
+    return render_template("dashboard.html", form=form)
 
 @app.route("/logout")
 @login_required
