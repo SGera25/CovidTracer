@@ -1,41 +1,41 @@
 from flask import Flask, redirect, url_for, render_template, request, flash, session
-from datetime import timedelta
+from flask_bootstrap import Bootstrap
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, BooleanField
+from wtforms.validators import InputRequired, Email, Length
+from flask_googlemaps import GoogleMaps, Map
 from flask_sqlalchemy import SQLAlchemy
-from flask_googlemaps import GoogleMaps
-from flask_googlemaps import Map
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 
 app = Flask(__name__)
-app.secret_key = "test"
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.sqlite3'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.permanent_session_lifetime = timedelta(minutes=15)
-
+app.config["SECRET_KEY"] = "test"
+app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///users.sqlite3"
+Bootstrap(app)
 db = SQLAlchemy(app)
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
 
-class users(db.Model):
-    _id = db.Column("id", db.Integer, primary_key=True)
-    name = db.Column(db.String(100))
-    email = db.Column(db.String(100))
-    age = db.Column(db.Integer())
-    sex = db.Column(db.String(100))
-    date = db.Column(db.String(100))
-    time = db.Column(db.String(100))
-    location = db.Column(db.String(100))
-    mask = db.Column(db.String(100))
-    symptoms =  db.Column(db.String(100))
-    contact =  db.Column(db.String(100))
+class User(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(), unique=True)
+    email = db.Column(db.String(50), unique=True)
+    password = db.Column(db.String(80))
 
-    def __init__(self, name, email, age=None, sex=None, date=None, time=None, location=None, mask=None, symptoms=None, contact=None):
-        self.name = name
-        self.email = email
-        self.age = age
-        self.sex = sex
-        self.date = date
-        self.time = time
-        self.location = location
-        self.mask = mask
-        self.symptoms = symptoms
-        self.contact = contact
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+class LoginForm(FlaskForm):
+    username = StringField("Username", validators=[InputRequired(), Length(min=4, max=15)])
+    password = PasswordField("Password", validators=[InputRequired(), Length(min=8, max=80)])
+    remember = BooleanField("Remember me")
+
+class RegisterForm(FlaskForm):
+    email = StringField("Email", validators=[InputRequired(), Email(message="Invalid email"), Length(max=50)])
+    username = StringField("Username", validators=[InputRequired(), Length(min=4, max=15)])
+    password = PasswordField("Password", validators=[InputRequired(), Length(min=8, max=80)])
 
 # Google Maps
 app.config['GOOGLEMAPS_KEY'] = "AIzaSyCoMJFQnPrxQf4Y4XBmJIYmd0_ER0lncV4"
@@ -47,56 +47,46 @@ GoogleMaps(app)
 def home():
     return render_template("home.html")
 
-@app.route("/view")
-def view():
-    return render_template("view.html", values=users.query.all())
+@app.route('/')
+def index():
+    return render_template("index.html")
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
-    if request.method == "POST":
-        session.permanent = True
-        user = request.form["nm"]
-        session["user"] = user
+    form = LoginForm()
 
-        found_user = users.query.filter_by(name=user).first()
-        if found_user:
-            session["email"] = founder_user.email
-        else:
-            usr = users(user, "")
-            db.session.add(usr)
-            db.session.commit()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user:
+            if check_password_hash(user.password, form.password.data):
+                login_user(user, remember=form.remember.data)
+                return redirect(url_for("dashboard"))
+        return "<h1>Invalid username or password</h1>"
 
-        return redirect(url_for("user"))
-    else:
-        if "user" in session:
-            return redirect(url_for("user"))
-        return render_template("login.html")
+    return render_template("login.html", form=form)
 
-@app.route("/user", methods=["POST", "GET"])
-def user():
-    email = None
-    if "user" in session:
-        user = session["user"]
+@app.route('/signup', methods=["POST", "GET"])
+def signup():
+    form = RegisterForm()
 
-        if request.method == "POST":
-            email = request.form["email"]
-            session["email"] = email
-            found_user = users.query.filter_by(name=user).first()
-            found_user.email = email
-            db.session.commit()
-        else:
-            if "email" in session:
-                email = session["email"]
+    if form.validate_on_submit():
+        hashed_password = generate_password_hash(form.password.data, method='sha256')
+        new_user = User(username=form.username.data, email=form.email.data, password=hashed_password)
+        db.session.add(new_user)
+        db.session.commit()
+        return '<h1>New user has been created!</h1>'
+    return render_template("signup.html", form=form)
 
-        return render_template("user.html", email=email)
-    else:
-        return redirect(url_for("login"))
+@app.route("/dashboard")
+@login_required
+def dashboard():
+    return render_template("dashboard.html")
 
 @app.route("/logout")
+@login_required
 def logout():
-    session.pop("user", None)
-    session.pop("email", None)
-    return redirect(url_for("login"))
+    logout_user()
+    return redirect(url_for('home'))
 
 @app.route("/maps")
 def mapview():
