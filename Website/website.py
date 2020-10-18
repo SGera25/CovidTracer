@@ -26,7 +26,6 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String(80))
 
 class Survey(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), unique=True)
     age = db.Column(db.String(3))
     sex = db.Column(db.String(8))
